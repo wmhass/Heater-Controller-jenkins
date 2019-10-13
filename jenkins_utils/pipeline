@@ -1,0 +1,52 @@
+pipeline {
+  environment {
+    registry = "williamhass/my-first-repo"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Stack Git') {
+      steps {
+        sh 'rm -rf Heater-Controller-Server-Docker-Stack'
+        sh 'git clone --recurse-submodules https://github.com/wmhass/Heater-Controller-Server-Docker-Stack.git'
+      }
+    }
+    stage('Build all images') {
+      steps{
+        sh "Heater-Controller-Server-Docker-Stack/sh/updatestack.sh --all --pull --build"
+      }
+    }
+    stage('Run production') {
+      steps{
+        sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --start --prod"
+      }
+    }
+    // stage('Cloning Project Git') {
+    //   steps {
+    //     git 'https://github.com/wmhass/Heater-Controller-apps_open_api.git'
+    //   }
+    // }
+    // stage('Building image') {
+    //   steps{
+    //     script {
+    //       dockerImage = docker.build registry + ":$BUILD_NUMBER"
+    //     }
+    //   }
+    // }
+    // stage('Deploy Image') {
+    //   steps{
+    //     script {
+    //       docker.withRegistry( '', registryCredential ) {
+    //         dockerImage.push()
+    //       }
+    //     }
+    //   }
+    // }
+    // stage('Remove Unused docker image') {
+    //   steps{
+    //     sh "docker rmi $registry:$BUILD_NUMBER"
+    //   }
+    // }
+  }
+}

@@ -1,0 +1,2 @@
+GitHub Keys: https://medium.com/facademy/setup-jenkins-for-private-repository-9060f54eeac9
+docker-compose exec -u root jenkins bash
