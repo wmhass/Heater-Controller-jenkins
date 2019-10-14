@@ -26,6 +26,6 @@ COPY ./entrypoint.sh /usr/local/var/entrypoint.sh
 # COPY . /usr/src/apps_open_api/
 
 # run entrypoint.sh
-ENTRYPOINT ["/usr/local/var/entrypoint.sh"]
+# ENTRYPOINT ["/usr/local/var/entrypoint.sh"]
 
 USER jenkins
