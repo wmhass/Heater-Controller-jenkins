@@ -7,8 +7,7 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./ssh_keys/id_rsa:/var/jenkins_home/.ssh/id_rsa
-      - ./ssh_keys/id_rsa.pub:/var/jenkins_home/.ssh/id_rsa.pub
+      - ~/.ssh/:/var/jenkins_home/.ssh
     ports:
         - 8080:8080
 volumes:
