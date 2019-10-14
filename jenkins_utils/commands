@@ -2,6 +2,7 @@ GitHub Keys: https://medium.com/facademy/setup-jenkins-for-private-repository-90
 docker-compose exec -u root jenkins bash
 
 # Give correct permissions to files
-RUN sudo chmod -R 777 /var/run/docker.sock
-RUN chmod 600 ~/.ssh/id_rsa.pub
-RUN chmod 600 ~/.ssh/id_rsa
+mkdir /var/jenkins_home/.ssh/
+cp /var/ssh_keys/id_rsa /var/jenkins_home/.ssh/
+chmod 600 /var/jenkins_home/.ssh/id_rsa
+chmod -R 777 /var/run/docker.sock
