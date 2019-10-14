@@ -18,5 +18,3 @@ RUN sudo chmod +x /bin/docker-compose
 RUN apt-get install -y docker-ce
 RUN usermod -a -G docker jenkins
 USER jenkins
-ADD ./ssh_keys/id_rsa /var/jenkins_home/.ssh/id_rsa
-ADD ./ssh_keys/id_rsa.pub /var/jenkins_home/.ssh/id_rsa.pub
