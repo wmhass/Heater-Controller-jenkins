@@ -16,12 +16,12 @@ pipeline {
           sh "echo TODO: Run tests for every service"
       }
     }
-    stage('Build docker images with `test` tag') {
+    stage('Build docker images') {
       steps{
         sh "Heater-Controller-Server-Docker-Stack/sh/updatestack.sh --all --build-docker-images"
       }
     }
-    stage('Run Production using `test` images') {
+    stage('Run Production') {
       steps{
         sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --start --prod"
       }
