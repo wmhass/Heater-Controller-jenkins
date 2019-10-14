@@ -17,4 +17,15 @@ RUN curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-co
 RUN sudo chmod +x /bin/docker-compose
 RUN apt-get install -y docker-ce
 RUN usermod -a -G docker jenkins
+
+
+# copy entrypoint.sh
+COPY ./entrypoint.sh /usr/local/var/entrypoint.sh
+
+# copy project
+# COPY . /usr/src/apps_open_api/
+
+# run entrypoint.sh
+ENTRYPOINT ["/usr/local/var/entrypoint.sh"]
+
 USER jenkins
