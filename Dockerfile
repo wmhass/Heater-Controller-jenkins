@@ -17,5 +17,4 @@ RUN curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-co
 RUN sudo chmod +x /bin/docker-compose
 RUN apt-get install -y docker-ce
 RUN usermod -a -G docker jenkins
-RUN sudo chmod -R 777 /var/run/docker.sock
 USER jenkins
