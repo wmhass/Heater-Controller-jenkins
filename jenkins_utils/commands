@@ -6,3 +6,4 @@ mkdir /var/jenkins_home/.ssh/
 cp /var/ssh_keys/id_rsa /var/jenkins_home/.ssh/
 chmod 600 /var/jenkins_home/.ssh/id_rsa
 chmod -R 777 /var/run/docker.sock
+cat /var/jenkins_home/secrets/initialAdminPassword
