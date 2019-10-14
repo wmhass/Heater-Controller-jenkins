@@ -8,21 +8,44 @@ pipeline {
   stages {
     stage('Cloning Stack Git') {
       steps {
-        sh 'rm -rf Heater-Controller-Server-Docker-Stack'
-        sh 'git clone --recurse-submodules https://github.com/wmhass/Heater-Controller-Server-Docker-Stack.git'
+          sh 'if cd Heater-Controller-Server-Docker-Stack; then git pull --recurse-submodules; else git clone https://github.com/wmhass/Heater-Controller-Server-Docker-Stack.git; fi'
       }
     }
-    stage('Build all images') {
+    stage('Run services tests') {
+      steps {
+          sh "echo TODO: Run tests for every service"
+      }
+    }
+    stage('Build docker images with `test` tag') {
       steps{
-        sh "Heater-Controller-Server-Docker-Stack/sh/updatestack.sh --all --pull --build"
+        sh "Heater-Controller-Server-Docker-Stack/sh/updatestack.sh --all --build-docker-images --tag=test"
       }
     }
-    stage('Run production') {
+    stage('Run Production using `test` images') {
       steps{
-        sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --start --prod"
+        sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --start --prod --override=docker-compose.test.yml"
       }
     }
-    // stage('Cloning Project Git') {
+    stage('Run Containers Integration test') {
+      steps{
+          sh "echo TODO: Assert if containers are running well"
+      }
+    }
+    stage('Push images to registry renaming :test to :stable') {
+       steps{
+           sh "echo TODO: Run script that pushes images to registry"
+      }
+    }
+    stage('Deploy application in production') {
+        steps{
+            sh "echo TODO: Connect via SSH to the Production machine and ask to sh/updatestack.sh --all --pull-docker-image"
+            sh "echo TODO: Connect via SSH to the Production machine and ask to sh/stack.sh --start --prod"
+        }
+    }
+
+
+
+    // stage('Cloning Service Git') {
     //   steps {
     //     git 'https://github.com/wmhass/Heater-Controller-apps_open_api.git'
     //   }
@@ -30,7 +53,23 @@ pipeline {
     // stage('Building image') {
     //   steps{
     //     script {
-    //       dockerImage = docker.build registry + ":$BUILD_NUMBER"
+    //       //dockerImage = docker.build service_name + ":$BUILD_NUMBER"
+    //      dockerImage = docker.build service_name + ":stable"
+    //     }
+    //   }
+    // }
+    // stage('Run staging with test image') {
+    //   steps{
+    //     script {
+    //       //dockerImage = docker.build service_name + ":$BUILD_NUMBER"
+    //      sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --start --prod"
+    //     }
+    //   }
+    // }
+    // stage('Test service docker image integration') {
+    //   steps{
+    //     script {
+    //      //TODO: Assert if the image is integrating well with the env
     //     }
     //   }
     // }
@@ -47,6 +86,12 @@ pipeline {
     //   steps{
     //     sh "docker rmi $registry:$BUILD_NUMBER"
     //   }
+    // }
+    // stage('Deploy application in production') {
+    //     steps{
+    //         //Connect via SSH to the Production machine and ask to sh/updatestack.sh --all --pull-docker-image
+    //         //Connect via SSH to the Production machine and ask to sh/stack.sh --start --prod
+    //     }
     // }
   }
 }
