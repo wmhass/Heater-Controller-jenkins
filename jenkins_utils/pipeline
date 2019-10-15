@@ -37,6 +37,11 @@ pipeline {
   }
   agent any
   stages {
+    stage('Pull new code') {
+      steps {
+        sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${update_cmnd_path} --all --pull-github-repo\""
+      }
+    }
     stage('Stop Production') {
       steps {
         sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${stack_cmnd_path} --stop --prod\""
