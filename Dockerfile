@@ -18,14 +18,11 @@ RUN sudo chmod +x /bin/docker-compose
 RUN apt-get install -y docker-ce
 RUN usermod -a -G docker jenkins
 
-
 # copy entrypoint.sh
 COPY ./entrypoint.sh /usr/local/var/entrypoint.sh
-
-# copy project
-# COPY . /usr/src/apps_open_api/
+RUN chmod +x /usr/local/var/entrypoint.sh
 
 # run entrypoint.sh
-# ENTRYPOINT ["/usr/local/var/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/var/entrypoint.sh"]
 
-USER jenkins
+CMD ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
