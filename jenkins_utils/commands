@@ -1,9 +1,18 @@
 GitHub Keys: https://medium.com/facademy/setup-jenkins-for-private-repository-9060f54eeac9
 docker-compose exec -u root jenkins bash
 
-# Give correct permissions to files
-mkdir /var/jenkins_home/.ssh/
-cp /var/ssh_keys/id_rsa /var/jenkins_home/.ssh/
-chmod 600 /var/jenkins_home/.ssh/id_rsa
-chmod -R 777 /var/run/docker.sock
-cat /var/jenkins_home/secrets/initialAdminPassword
+
+# 1. Generate SSH Keys:
+docker-compose exec jenkins ssh-keygen -t rsa
+docker-compose exec jenkins cat /root/.ssh/id_rsa.pub
+
+# 2. Setup keys
+- Add key to GitHub
+- Add key to Host machine authorized_keys file (permission 640)
+
+# 3. Get Host ip and Connect
+/sbin/ip route|awk '/default/ { print $3 }'
+
+ssh -t vagrant@172.26.0.1 "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh --stop --prod"
+
+HOST_IP_ADDRESS=$(/sbin/ip route|awk '/default/ { print $3 }')

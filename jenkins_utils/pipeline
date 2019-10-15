@@ -1,3 +1,4 @@
+# Production
 pipeline {
   environment {
     registry = "williamhass/my-first-repo"
@@ -108,5 +109,27 @@ pipeline {
     //         //Connect via SSH to the Production machine and ask to sh/stack.sh --start --prod
     //     }
     // }
+  }
+}
+
+# Development
+pipeline {
+    environment {
+        host = "/sbin/ip route|awk '/default/ { print \$3 }'"
+        user = "vagrant"
+        command_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh"
+    }
+  agent any
+  stages {
+    stage('Stop Production') {
+        steps {
+            sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${command_path} --stop --prod\""
+        }
+    }
+    stage('Start Dev') {
+        steps {
+            sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${command_path} --start --dev\""
+        }
+    }
   }
 }
