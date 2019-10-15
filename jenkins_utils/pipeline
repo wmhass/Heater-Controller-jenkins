@@ -4,8 +4,8 @@ pipeline {
   environment {
     host = "/sbin/ip route|awk '/default/ { print \$3 }'"
     user = "vagrant"
-    stack_cmnd_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh"
-    update_cmnd_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/updatestack.sh"
+    stack_cmnd_path = "sudo /usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh"
+    update_cmnd_path = "sudo /usr/local/var/Heater-Controller-Server-Docker-Stack/sh/updatestack.sh"
   }
   agent any
   stages {
@@ -32,8 +32,8 @@ pipeline {
   environment {
     host = "/sbin/ip route|awk '/default/ { print \$3 }'"
     user = "vagrant"
-    stack_cmnd_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh"
-    update_cmnd_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/updatestack.sh"
+    stack_cmnd_path = "sudo /usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh"
+    update_cmnd_path = "sudo /usr/local/var/Heater-Controller-Server-Docker-Stack/sh/updatestack.sh"
   }
   agent any
   stages {
