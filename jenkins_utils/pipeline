@@ -1,9 +1,39 @@
 # Production
+
+pipeline {
+  environment {
+    host = "/sbin/ip route|awk '/default/ { print \$3 }'"
+    user = "vagrant"
+    stack_cmnd_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh"
+    update_cmnd_path = "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/updatestack.sh"
+  }
+  agent any
+  stages {
+    stage('Build images') {
+      steps {
+        sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${update_cmnd_path} --all --build-docker-images\""
+      }
+    }
+    stage('Stop Development') {
+      steps {
+        sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${stack_cmnd_path} --stop --dev\""
+      }
+    }
+    stage('Start Production') {
+      steps {
+        sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${stack_cmnd_path} --start --prod\""
+      }
+    }
+  }
+}
+
+# Prod 2
 pipeline {
   environment {
     registry = "williamhass/my-first-repo"
     registryCredential = 'dockerhub'
     dockerImage = ''
+    host = "/sbin/ip route|awk '/default/ { print \$3 }'"
   }
   agent any
   stages {
