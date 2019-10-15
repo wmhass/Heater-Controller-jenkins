@@ -6,6 +6,11 @@ pipeline {
   }
   agent any
   stages {
+    stage('Remove Old Stack Repo') {
+        steps {
+            sh 'if [ -d Heater-Controller-Server-Docker-Stack ]; then rm -rf Heater-Controller-Server-Docker-Stack; fi'
+        }
+    }
     stage('Cloning Stack Git') {
       steps {
           sh 'if cd Heater-Controller-Server-Docker-Stack; then git pull --recurse-submodules; else git clone --recurse-submodules https://github.com/wmhass/Heater-Controller-Server-Docker-Stack.git; fi'
@@ -19,6 +24,16 @@ pipeline {
     stage('Build docker images') {
       steps{
         sh "Heater-Controller-Server-Docker-Stack/sh/updatestack.sh --all --build-docker-images"
+      }
+    }
+    stage('Stop Production') {
+      steps{
+        sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --stop --prod"
+      }
+    }
+    stage('Stop Dev') {
+      steps{
+        sh "Heater-Controller-Server-Docker-Stack/sh/stack.sh --stop --dev"
       }
     }
     stage('Run Production') {
