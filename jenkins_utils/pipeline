@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Build images') {
       steps {
-        sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${update_cmnd_path} --all --build-docker-images\""
+        sh "export IP=\$(${host}) && ssh -t -t ${user}@\$IP \"${update_cmnd_path} --all --build-docker-images --pull-github-repo\""
       }
     }
     stage('Stop Development') {
