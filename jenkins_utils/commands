@@ -1,6 +1,4 @@
 GitHub Keys: https://medium.com/facademy/setup-jenkins-for-private-repository-9060f54eeac9
-docker-compose exec -u root jenkins bash
-
 
 # 1. Generate SSH Keys:
 docker-compose exec jenkins ssh-keygen -t rsa
@@ -16,3 +14,6 @@ docker-compose exec jenkins cat /root/.ssh/id_rsa.pub
 ssh -t vagrant@172.26.0.1 "/usr/local/var/Heater-Controller-Server-Docker-Stack/sh/stack.sh --stop --prod"
 
 HOST_IP_ADDRESS=$(/sbin/ip route|awk '/default/ { print $3 }')
+
+# Misc
+Execute command on container as root: `docker-compose exec -u root jenkins bash`
